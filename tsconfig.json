@@ -15,7 +15,11 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "skipLibCheck": true, 
+    "skipLibCheck": true,
+    "types": ["node", "jest"],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "declaration": true,
     "downlevelIteration": true,
     "baseUrl": "src/js",
@@ -36,6 +40,7 @@
     "node_modules",
     "**/*.d.ts",
     "webpack.cofing.js",
+    "**/*.test.ts",
     "./libs/*",
     "gulp"
   ]

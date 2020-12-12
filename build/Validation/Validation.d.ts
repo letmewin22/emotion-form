@@ -3,9 +3,9 @@ export declare class Validation {
     readonly options: string;
     constructor($input: HTMLInputElement, options: string);
     init(): boolean;
-    notEmpty(): boolean;
-    phone(): boolean;
-    minlength(value: number): boolean;
-    email(): boolean;
-    maxlength(value: number): boolean;
+    notEmpty(string: string): boolean;
+    phone(string: string): boolean;
+    minlength(string: string, value: number): boolean;
+    email(string: string): boolean;
+    maxlength(string: string, value: number): boolean;
 }

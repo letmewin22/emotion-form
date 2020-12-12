@@ -8,3 +8,4 @@ export declare class Input {
     validate($el: HTMLInputElement): boolean;
     destroy(): void;
 }
+export declare type TInput = typeof Input;

@@ -24,6 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FormSend = void 0;
 const _Bind_1 = __importDefault(require("./decorators/@Bind"));
 const Input_1 = require("./Input");
+const Loader_1 = require("./Loader");
 class FormSend {
     constructor($form, opts) {
         this.$form = $form;
@@ -31,19 +32,13 @@ class FormSend {
         this.data = {};
         this.inputInstance = [];
         this.init();
+        this.loader = new Loader_1.Loader($form);
     }
     init() {
         if (!this.opts || !this.opts.URL) {
             throw new Error('URL is must be defined');
-            return;
         }
         this.$form.addEventListener('submit', this.submit);
-    }
-    showLoader() {
-        this.$form.classList.add('loading');
-    }
-    hideLoader() {
-        this.$form.classList.remove('loading');
     }
     success() {
         this.reset();
@@ -60,11 +55,11 @@ class FormSend {
             Object.keys(this.data).map(el => {
                 return formData.append(el, this.data[el]);
             });
-            this.showLoader();
+            this.loader.showLoader();
             try {
                 const res = yield fetch(this.opts.URL, {
                     method: 'POST',
-                    body: formData,
+                    body: formData
                 });
                 if (res.status >= 200 && res.status < 400) {
                     this.success();
@@ -79,7 +74,7 @@ class FormSend {
                 console.log(e);
             }
             finally {
-                this.hideLoader();
+                this.loader.hideLoader();
             }
         });
     }

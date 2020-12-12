@@ -1,5 +1,6 @@
 import Bind from './decorators/@Bind'
-import {Input} from './Input'
+import {Input, TInput} from './Input'
+import {Loader, TLoader} from './Loader'
 import {TOpts} from './TOpts'
 
 interface IData {
@@ -7,29 +8,22 @@ interface IData {
 }
 
 export class FormSend {
-  inputsInstance: Array<any>
+  inputsInstance: TInput[]
+  loader: TLoader
 
   data: IData = {}
   inputInstance = []
 
   constructor(readonly $form: HTMLFormElement, readonly opts: TOpts) {
     this.init()
+    this.loader = new Loader($form)
   }
 
   private init(): void {
     if (!this.opts || !this.opts.URL) {
       throw new Error('URL is must be defined')
-      return
     }
     this.$form.addEventListener('submit', this.submit)
-  }
-
-  showLoader(): void {
-    this.$form.classList.add('loading')
-  }
-
-  hideLoader(): void {
-    this.$form.classList.remove('loading')
   }
 
   protected success(): void {
@@ -50,11 +44,11 @@ export class FormSend {
       return formData.append(el, this.data[el])
     })
 
-    this.showLoader()
+    this.loader.showLoader()
     try {
       const res = await fetch(this.opts.URL, {
         method: 'POST',
-        body: formData,
+        body: formData
       })
 
       if (res.status >= 200 && res.status < 400) {
@@ -67,15 +61,14 @@ export class FormSend {
     } catch (e) {
       console.log(e)
     } finally {
-      this.hideLoader()
+      this.loader.hideLoader()
     }
   }
 
   @Bind
   protected submit(e: Event): void {
     e.preventDefault()
-    const inputs: Array<any> = [...this.$form.elements]
-
+    const inputs: any[] = [...this.$form.elements]
     const isValid = inputs.map(input => {
       if (
         (input.nodeName === 'INPUT' || input.nodeName === 'TEXTAREA') &&
@@ -87,6 +80,7 @@ export class FormSend {
         return inputClass.validate(input)
       }
     })
+
     if (!isValid.includes(false)) {
       this.requestSend()
     } else {
@@ -105,7 +99,7 @@ export class FormSend {
   }
 
   protected reset(): void {
-    const inputs: Array<any> = [...this.$form.elements]
+    const inputs: any[] = [...this.$form.elements]
     inputs.forEach(input => {
       if (input.nodeName === 'INPUT' && input.type !== 'submit') {
         input.value = ''

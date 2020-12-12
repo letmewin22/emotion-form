@@ -56,3 +56,5 @@ export class Input {
     this.$input.removeEventListener('input', this.change)
   }
 }
+
+export type TInput = typeof Input

@@ -1,0 +1,32 @@
+{
+  "name": "@emotionagency/form",
+  "version": "0.0.1",
+  "description": "A package for convenient work with forms: validation of inputs, sending to the server",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "js",
+    "manager",
+    "javascript",
+    "form",
+    "validation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/letmewin22/emotion-form.git"
+  },
+  "author": "emotion-agency <hello@emotion-agency.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/letmewin22/emotion-form/issues"
+  },
+  "homepage": "https://github.com/letmewin22/emotion-form#readme",
+  "dependencies": {
+    "libphonenumber-js": "^1.9.6"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.12"
+  }
+}

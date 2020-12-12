@@ -3,11 +3,11 @@ This is a package for convenient work with forms: validation of inputs, sending 
 
 # Instalation
 
-`npm i -D @emotionagency/form`
+`npm i @emotionagency/form`
 
 or
 
-`yarn add --dev @emotionagency/form`
+`yarn add @emotionagency/form`
 
 # Usage
 

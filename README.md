@@ -14,7 +14,7 @@ or
 ## Initialization
 
 ```
-import {Form} from '@emotionagency/form'
+import Form from '@emotionagency/form'
 
   const form = new Form('selector', {
     URL: 'URL to send form data'

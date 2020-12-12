@@ -2,10 +2,14 @@ import Bind from './decorators/@Bind'
 import {Input} from './Input'
 import {TOpts} from './TOpts'
 
+interface IData {
+  [key: string]: string
+}
+
 export class FormSend {
   inputsInstance: Array<any>
-  data: any
 
+  data: IData = {}
   inputInstance = []
 
   constructor(readonly $form: HTMLFormElement, readonly opts: TOpts) {

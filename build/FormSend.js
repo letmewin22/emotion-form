@@ -28,6 +28,7 @@ class FormSend {
     constructor($form, opts) {
         this.$form = $form;
         this.opts = opts;
+        this.data = {};
         this.inputInstance = [];
         this.init();
     }

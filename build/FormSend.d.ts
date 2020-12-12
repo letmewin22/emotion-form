@@ -1,9 +1,12 @@
 import { TOpts } from './TOpts';
+interface IData {
+    [key: string]: string;
+}
 export declare class FormSend {
     readonly $form: HTMLFormElement;
     readonly opts: TOpts;
     inputsInstance: Array<any>;
-    data: any;
+    data: IData;
     inputInstance: any[];
     constructor($form: HTMLFormElement, opts: TOpts);
     private init;
@@ -16,3 +19,4 @@ export declare class FormSend {
     focusFirstFailedInput(arr: Array<boolean>): void;
     protected reset(): void;
 }
+export {};

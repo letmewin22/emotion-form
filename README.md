@@ -18,6 +18,8 @@ import Form from '@emotionagency/form'
 
   const form = new Form('selector', {
     URL: 'URL to send form data'
+    onSuccess: callback on success form send
+    onError: callback if sent was failed
   })
 ```
 

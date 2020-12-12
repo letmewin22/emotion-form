@@ -1,10 +1,11 @@
 {
   "name": "@emotionagency/form",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A package for convenient work with forms: validation of inputs, sending to the server",
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "tsc"
   },
   "keywords": [
     "js",

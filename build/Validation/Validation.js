@@ -12,40 +12,41 @@ class Validation {
         const result = optionsValues.map(option => {
             const method = option.replace(/[\d()]/gm, '');
             const values = option.replace(/\D/gm, '');
-            return this[method](this.$input.value, values && +values);
+            return this[method](values && +values);
         });
         return !result.includes(false);
     }
-    notEmpty(string) {
-        if (string.trim().length > 0) {
+    notEmpty() {
+        if (this.$input.value.trim().length > 0) {
             return true;
         }
         return false;
     }
-    phone(string) {
-        string = string.replace(/[A-z]|[А-я]|\s|[*!@#$%^&{}[\]~""/|=]/g, '');
-        const phoneNumber = libphonenumber_js_1.parsePhoneNumberFromString(string);
+    phone() {
+        this.$input.value = this.$input.value.replace(/[A-z]|[А-я]|\s|[*!@#$%^&{}[\]~""/|=]/g, '');
+        console.log(this.$input.value);
+        const phoneNumber = libphonenumber_js_1.parsePhoneNumberFromString(this.$input.value);
         if (phoneNumber) {
-            string = phoneNumber.formatInternational();
+            this.$input.value = phoneNumber.formatInternational();
         }
         return true;
     }
-    minlength(string, value) {
-        if (string.trim().length < value) {
+    minlength(value) {
+        if (this.$input.value.trim().length < value) {
             return false;
         }
         return true;
     }
-    email(string) {
+    email() {
         const regExp = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
-        const isEmailValid = regExp.test(string.trim());
+        const isEmailValid = regExp.test(this.$input.value.trim());
         if (!isEmailValid) {
             return false;
         }
         return true;
     }
-    maxlength(string, value) {
-        const inputLength = string.trim().length;
+    maxlength(value) {
+        const inputLength = this.$input.value.trim().length;
         if (this.$input && this.$input.parentNode) {
             const lc = this.$input.parentNode.querySelector('[data-length]');
             const diff = value - inputLength;

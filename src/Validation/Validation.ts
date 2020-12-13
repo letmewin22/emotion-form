@@ -5,51 +5,53 @@ export class Validation {
 
   init(): boolean {
     const optionsValues = this.options.split(' ')
-
     const result = optionsValues.map(option => {
       const method = option.replace(/[\d()]/gm, '')
       const values = option.replace(/\D/gm, '')
-      return this[method](this.$input.value, values && +values)
+      return this[method](values && +values)
     })
-
     return !result.includes(false)
   }
 
-  notEmpty(string: string): boolean {
-    if (string.trim().length > 0) {
+  notEmpty(): boolean {
+    if (this.$input.value.trim().length > 0) {
       return true
     }
     return false
   }
 
-  phone(string: string): boolean {
-    string = string.replace(/[A-z]|[А-я]|\s|[*!@#$%^&{}[\]~""/|=]/g, '')
-    const phoneNumber = parsePhoneNumberFromString(string)
+  phone(): boolean {
+    this.$input.value = this.$input.value.replace(
+      /[A-z]|[А-я]|\s|[*!@#$%^&{}[\]~""/|=]/g,
+      ''
+    )
+    console.log(this.$input.value)
+    const phoneNumber = parsePhoneNumberFromString(this.$input.value)
     if (phoneNumber) {
-      string = phoneNumber.formatInternational()
+      this.$input.value = phoneNumber.formatInternational()
     }
 
     return true
   }
 
-  minlength(string: string, value: number): boolean {
-    if (string.trim().length < value) {
+  minlength(value: number): boolean {
+    if (this.$input.value.trim().length < value) {
       return false
     }
     return true
   }
 
-  email(string: string): boolean {
+  email(): boolean {
     const regExp = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/
-    const isEmailValid = regExp.test(string.trim())
+    const isEmailValid = regExp.test(this.$input.value.trim())
     if (!isEmailValid) {
       return false
     }
     return true
   }
 
-  maxlength(string: string, value: number): boolean {
-    const inputLength = string.trim().length
+  maxlength(value: number): boolean {
+    const inputLength = this.$input.value.trim().length
     if (this.$input && this.$input.parentNode) {
       const lc = this.$input.parentNode.querySelector('[data-length]')
       const diff = value - inputLength

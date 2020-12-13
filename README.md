@@ -1,6 +1,9 @@
 # What is this?
 This is a package for convenient work with forms: validation of inputs, sending to the server
 
+# Example
+https://emotion-agency.com/drafts/form-show/
+
 # Instalation
 
 `npm i @emotionagency/form`

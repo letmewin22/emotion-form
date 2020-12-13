@@ -18,8 +18,10 @@ export declare class FormSend {
     protected success(): void;
     protected error(): void;
     protected requestSend(): Promise<any>;
+    isInput(input: any): boolean;
     protected submit(e: Event): void;
     focusFirstFailedInput(arr: Array<boolean>): void;
     protected reset(): void;
 }
+export declare type TFormSend = typeof FormSend.prototype;
 export {};

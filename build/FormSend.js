@@ -41,7 +41,7 @@ class FormSend {
         this.em = new ErrorMessage_1.ErrorMessage(this.$form);
         this.sd = new SendData_1.SendData({
             error: () => this.error(),
-            success: () => this.success()
+            success: () => this.success(),
         }, this.$form);
         this.$form.addEventListener('submit', this.submit);
     }
@@ -62,19 +62,22 @@ class FormSend {
                 return formData.append(el, this.data[el]);
             });
             if (typeof this.opts.URL === 'string') {
-                this.sd.stringUrl(this.opts.URL, formData);
+                yield this.sd.stringUrl(this.opts.URL, formData);
             }
             if (Array.isArray(this.opts.URL)) {
-                this.sd.arrayUrls(this.opts.URL, formData);
+                yield this.sd.arrayUrls(this.opts.URL, formData);
             }
         });
+    }
+    isInput(input) {
+        return ((input.nodeName === 'INPUT' || input.nodeName === 'TEXTAREA') &&
+            input.type !== 'submit');
     }
     submit(e) {
         e.preventDefault();
         const inputs = [...this.$form.elements];
         const isValid = inputs.map(input => {
-            if ((input.nodeName === 'INPUT' || input.nodeName === 'TEXTAREA') &&
-                input.type !== 'submit') {
+            if (this.isInput(input)) {
                 this.data[input.name] = input.value;
                 const inputClass = new Input_1.Input(input);
                 this.inputInstance.push(inputClass);
@@ -100,7 +103,7 @@ class FormSend {
     reset() {
         const inputs = [...this.$form.elements];
         inputs.forEach(input => {
-            if (input.nodeName === 'INPUT' && input.type !== 'submit') {
+            if (this.isInput(input)) {
                 input.value = '';
                 input.blur();
                 input.classList.remove('js-focus');

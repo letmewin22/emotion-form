@@ -25,7 +25,6 @@ export class Validation {
       /[A-z]|[А-я]|\s|[*!@#$%^&{}[\]~""/|=]/g,
       ''
     )
-    console.log(this.$input.value)
     const phoneNumber = parsePhoneNumberFromString(this.$input.value)
     if (phoneNumber) {
       this.$input.value = phoneNumber.formatInternational()

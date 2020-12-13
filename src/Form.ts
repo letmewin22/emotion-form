@@ -1,11 +1,11 @@
-import {FormSend} from './FormSend'
+import {FormSend, TFormSend} from './FormSend'
 import {Input} from './Input'
 import {TOpts} from './TOpts'
 
 export class Form {
   $form: HTMLFormElement
   $inputs: NodeListOf<HTMLInputElement>
-  formSend: any
+  formSend: TFormSend
 
   constructor(readonly formSelector: string, readonly opts: TOpts) {
     this.$form = document.querySelector(formSelector)

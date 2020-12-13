@@ -24,7 +24,6 @@ class Validation {
     }
     phone() {
         this.$input.value = this.$input.value.replace(/[A-z]|[А-я]|\s|[*!@#$%^&{}[\]~""/|=]/g, '');
-        console.log(this.$input.value);
         const phoneNumber = libphonenumber_js_1.parsePhoneNumberFromString(this.$input.value);
         if (phoneNumber) {
             this.$input.value = phoneNumber.formatInternational();

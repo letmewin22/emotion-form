@@ -29,7 +29,7 @@ export class FormSend {
     this.sd = new SendData(
       {
         error: () => this.error(),
-        success: () => this.success()
+        success: () => this.success(),
       },
       this.$form
     )
@@ -56,12 +56,19 @@ export class FormSend {
     })
 
     if (typeof this.opts.URL === 'string') {
-      this.sd.stringUrl(this.opts.URL, formData)
+      await this.sd.stringUrl(this.opts.URL, formData)
     }
 
     if (Array.isArray(this.opts.URL)) {
-      this.sd.arrayUrls(this.opts.URL, formData)
+      await this.sd.arrayUrls(this.opts.URL, formData)
     }
+  }
+
+  isInput(input: any): boolean {
+    return (
+      (input.nodeName === 'INPUT' || input.nodeName === 'TEXTAREA') &&
+      input.type !== 'submit'
+    )
   }
 
   @Bind
@@ -69,10 +76,7 @@ export class FormSend {
     e.preventDefault()
     const inputs: any[] = [...this.$form.elements]
     const isValid = inputs.map(input => {
-      if (
-        (input.nodeName === 'INPUT' || input.nodeName === 'TEXTAREA') &&
-        input.type !== 'submit'
-      ) {
+      if (this.isInput(input)) {
         this.data[input.name] = input.value
         const inputClass = new Input(input)
         this.inputInstance.push(inputClass)
@@ -100,7 +104,7 @@ export class FormSend {
   protected reset(): void {
     const inputs: any[] = [...this.$form.elements]
     inputs.forEach(input => {
-      if (input.nodeName === 'INPUT' && input.type !== 'submit') {
+      if (this.isInput(input)) {
         input.value = ''
         input.blur()
         input.classList.remove('js-focus')
@@ -109,3 +113,5 @@ export class FormSend {
     document.body.classList.remove('e-fixed')
   }
 }
+
+export type TFormSend = typeof FormSend.prototype

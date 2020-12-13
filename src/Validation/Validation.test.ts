@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import {Validation} from './Validation'
 
 const newValidation = (inputValue: string, validationType: string) => {

@@ -24,13 +24,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FormSend = void 0;
 const _Bind_1 = __importDefault(require("./decorators/@Bind"));
 const ErrorMessage_1 = require("./ErrorMessage");
+const formData_1 = require("./formData");
 const Input_1 = require("./Input");
 const SendData_1 = require("./SendData");
 class FormSend {
     constructor($form, opts) {
         this.$form = $form;
         this.opts = opts;
-        this.data = {};
         this.inputInstance = [];
         this.init();
     }
@@ -40,8 +40,8 @@ class FormSend {
         }
         this.em = new ErrorMessage_1.ErrorMessage(this.$form);
         this.sd = new SendData_1.SendData({
-            error: () => this.error(),
-            success: () => this.success(),
+            error: this.error,
+            success: this.success
         }, this.$form);
         this.$form.addEventListener('submit', this.submit);
     }
@@ -58,8 +58,8 @@ class FormSend {
     requestSend() {
         return __awaiter(this, void 0, void 0, function* () {
             const formData = new FormData();
-            Object.keys(this.data).map(el => {
-                return formData.append(el, this.data[el]);
+            Object.keys(formData_1.data).map(el => {
+                return formData.append(el, formData_1.data[el]);
             });
             if (typeof this.opts.URL === 'string') {
                 yield this.sd.stringUrl(this.opts.URL, formData);
@@ -70,15 +70,13 @@ class FormSend {
         });
     }
     isInput(input) {
-        return ((input.nodeName === 'INPUT' || input.nodeName === 'TEXTAREA') &&
-            input.type !== 'submit');
+        return input.dataset.input !== undefined;
     }
     submit(e) {
         e.preventDefault();
         const inputs = [...this.$form.elements];
         const isValid = inputs.map(input => {
             if (this.isInput(input)) {
-                this.data[input.name] = input.value;
                 const inputClass = new Input_1.Input(input);
                 this.inputInstance.push(inputClass);
                 return inputClass.validate(input);
@@ -101,17 +99,27 @@ class FormSend {
         }
     }
     reset() {
-        const inputs = [...this.$form.elements];
-        inputs.forEach(input => {
-            if (this.isInput(input)) {
-                input.value = '';
-                input.blur();
-                input.classList.remove('js-focus');
-            }
+        Object.keys(formData_1.data).forEach(el => {
+            this.$form[el].value = '';
+            this.$form[el].blur();
+            this.$form[el].classList.remove('js-focus');
+            delete formData_1.data[el];
         });
         document.body.classList.remove('e-fixed');
     }
 }
+__decorate([
+    _Bind_1.default,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], FormSend.prototype, "success", null);
+__decorate([
+    _Bind_1.default,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], FormSend.prototype, "error", null);
 __decorate([
     _Bind_1.default,
     __metadata("design:type", Function),

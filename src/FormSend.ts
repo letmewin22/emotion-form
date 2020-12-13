@@ -1,19 +1,15 @@
 import Bind from './decorators/@Bind'
 import {ErrorMessage, TEM} from './ErrorMessage'
+import {data} from './formData'
 import {Input, TInput} from './Input'
 import {SendData, TSendData} from './SendData'
 import {TOpts} from './TOpts'
-
-interface IData {
-  [key: string]: string
-}
 
 export class FormSend {
   inputsInstance: TInput[]
   em: TEM
   sd: TSendData
 
-  data: IData = {}
   inputInstance = []
 
   constructor(readonly $form: HTMLFormElement, readonly opts: TOpts) {
@@ -28,14 +24,15 @@ export class FormSend {
 
     this.sd = new SendData(
       {
-        error: () => this.error(),
-        success: () => this.success(),
+        error: this.error,
+        success: this.success
       },
       this.$form
     )
     this.$form.addEventListener('submit', this.submit)
   }
 
+  @Bind
   protected success(): void {
     this.reset()
     this.inputInstance.forEach(inst => inst.destroy())
@@ -43,6 +40,7 @@ export class FormSend {
     this.opts.onSuccess && this.opts.onSuccess()
   }
 
+  @Bind
   protected error(): void {
     this.em.show()
     this.opts.onSuccess && this.opts.onError()
@@ -51,8 +49,8 @@ export class FormSend {
   protected async requestSend(): Promise<any> {
     const formData = new FormData()
 
-    Object.keys(this.data).map(el => {
-      return formData.append(el, this.data[el])
+    Object.keys(data).map(el => {
+      return formData.append(el, data[el])
     })
 
     if (typeof this.opts.URL === 'string') {
@@ -64,11 +62,8 @@ export class FormSend {
     }
   }
 
-  isInput(input: any): boolean {
-    return (
-      (input.nodeName === 'INPUT' || input.nodeName === 'TEXTAREA') &&
-      input.type !== 'submit'
-    )
+  isInput(input: HTMLElement): boolean {
+    return input.dataset.input !== undefined
   }
 
   @Bind
@@ -77,7 +72,6 @@ export class FormSend {
     const inputs: any[] = [...this.$form.elements]
     const isValid = inputs.map(input => {
       if (this.isInput(input)) {
-        this.data[input.name] = input.value
         const inputClass = new Input(input)
         this.inputInstance.push(inputClass)
         return inputClass.validate(input)
@@ -91,7 +85,7 @@ export class FormSend {
     }
   }
 
-  focusFirstFailedInput(arr: Array<boolean>): void {
+  focusFirstFailedInput(arr: boolean[]): void {
     for (let i = 0; i < arr.length; i++) {
       const el = arr[i]
       if (el === false) {
@@ -102,14 +96,13 @@ export class FormSend {
   }
 
   protected reset(): void {
-    const inputs: any[] = [...this.$form.elements]
-    inputs.forEach(input => {
-      if (this.isInput(input)) {
-        input.value = ''
-        input.blur()
-        input.classList.remove('js-focus')
-      }
+    Object.keys(data).forEach(el => {
+      this.$form[el].value = ''
+      this.$form[el].blur()
+      this.$form[el].classList.remove('js-focus')
+      delete data[el]
     })
+
     document.body.classList.remove('e-fixed')
   }
 }

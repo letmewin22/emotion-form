@@ -1,6 +1,7 @@
 import Bind from './decorators/@Bind'
 import {Textarea} from './Textarea'
 import {Validation} from './Validation/Validation'
+import {data} from './formData'
 
 export class Input {
   constructor(readonly $input: HTMLInputElement) {
@@ -20,6 +21,8 @@ export class Input {
   @Bind
   change(): void {
     this.validate(this.$input)
+    data[this.$input.name] = this.$input.value
+    console.log(data)
   }
 
   @Bind

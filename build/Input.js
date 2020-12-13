@@ -16,6 +16,7 @@ exports.Input = void 0;
 const _Bind_1 = __importDefault(require("./decorators/@Bind"));
 const Textarea_1 = require("./Textarea");
 const Validation_1 = require("./Validation/Validation");
+const formData_1 = require("./formData");
 class Input {
     constructor($input) {
         this.$input = $input;
@@ -31,6 +32,8 @@ class Input {
     }
     change() {
         this.validate(this.$input);
+        formData_1.data[this.$input.name] = this.$input.value;
+        console.log(formData_1.data);
     }
     focus() {
         this.$input.focus();

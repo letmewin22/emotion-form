@@ -23,8 +23,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FormSend = void 0;
 const _Bind_1 = __importDefault(require("./decorators/@Bind"));
+const ErrorMessage_1 = require("./ErrorMessage");
 const Input_1 = require("./Input");
-const Loader_1 = require("./Loader");
+const SendData_1 = require("./SendData");
 class FormSend {
     constructor($form, opts) {
         this.$form = $form;
@@ -32,12 +33,16 @@ class FormSend {
         this.data = {};
         this.inputInstance = [];
         this.init();
-        this.loader = new Loader_1.Loader($form);
     }
     init() {
         if (!this.opts || !this.opts.URL) {
             throw new Error('URL is must be defined');
         }
+        this.em = new ErrorMessage_1.ErrorMessage(this.$form);
+        this.sd = new SendData_1.SendData({
+            error: () => this.error(),
+            success: () => this.success()
+        }, this.$form);
         this.$form.addEventListener('submit', this.submit);
     }
     success() {
@@ -47,6 +52,7 @@ class FormSend {
         this.opts.onSuccess && this.opts.onSuccess();
     }
     error() {
+        this.em.show();
         this.opts.onSuccess && this.opts.onError();
     }
     requestSend() {
@@ -55,26 +61,11 @@ class FormSend {
             Object.keys(this.data).map(el => {
                 return formData.append(el, this.data[el]);
             });
-            this.loader.showLoader();
-            try {
-                const res = yield fetch(this.opts.URL, {
-                    method: 'POST',
-                    body: formData
-                });
-                if (res.status >= 200 && res.status < 400) {
-                    this.success();
-                    return;
-                }
-                else {
-                    alert('Error');
-                    this.error();
-                }
+            if (typeof this.opts.URL === 'string') {
+                this.sd.stringUrl(this.opts.URL, formData);
             }
-            catch (e) {
-                console.log(e);
-            }
-            finally {
-                this.loader.hideLoader();
+            if (Array.isArray(this.opts.URL)) {
+                this.sd.arrayUrls(this.opts.URL, formData);
             }
         });
     }

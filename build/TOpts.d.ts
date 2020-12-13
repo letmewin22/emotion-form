@@ -1,5 +1,5 @@
 export declare type TOpts = {
-    URL: string;
+    URL: string | string[];
     onSuccess?: () => void;
     onError?: () => void;
 };

@@ -1,5 +1,6 @@
+import { TEM } from './ErrorMessage';
 import { TInput } from './Input';
-import { TLoader } from './Loader';
+import { TSendData } from './SendData';
 import { TOpts } from './TOpts';
 interface IData {
     [key: string]: string;
@@ -8,7 +9,8 @@ export declare class FormSend {
     readonly $form: HTMLFormElement;
     readonly opts: TOpts;
     inputsInstance: TInput[];
-    loader: TLoader;
+    em: TEM;
+    sd: TSendData;
     data: IData;
     inputInstance: any[];
     constructor($form: HTMLFormElement, opts: TOpts);

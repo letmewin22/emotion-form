@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Input = void 0;
 const _Bind_1 = __importDefault(require("./decorators/@Bind"));
+const Textarea_1 = require("./Textarea");
 const Validation_1 = require("./Validation/Validation");
 class Input {
     constructor($input) {
@@ -24,6 +25,9 @@ class Input {
         this.$input.addEventListener('focus', this.focus);
         this.$input.addEventListener('blur', this.blur);
         this.$input.addEventListener('input', this.change);
+        if (this.$input.tagName === 'TEXTAREA') {
+            new Textarea_1.Textarea(this.$input);
+        }
     }
     change() {
         this.validate(this.$input);

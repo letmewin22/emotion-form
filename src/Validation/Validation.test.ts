@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import {Validation} from './Validation'
 
 const $input: HTMLInputElement = document.createElement('input')

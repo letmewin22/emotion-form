@@ -17,7 +17,7 @@ or
 import Form from '@emotionagency/form'
 
   const form = new Form('selector', {
-    URL: 'URL to send form data'
+    URL: 'URL or array of URLs to send form data'
     onSuccess: callback on success form send
     onError: callback if sent was failed
   })
@@ -34,7 +34,7 @@ form.addFocus(input number)
 **! You can change any classes, but you can't change structure and data-attributes**
 
 ```
- <form id="form" data-error="Some error" class="form" novalidate>
+ <form id="form" class="form" novalidate>
     <div class="input-container form__input-container">
       <input 
         data-input 
@@ -46,6 +46,9 @@ form.addFocus(input number)
       <label class="label form__label" for="name">Name</label>
       <div class="input-validate form__input-validate">Error text</div>
     </div>
+    <div data-error class="form__error-message">
+      <div class="form__error-message-text">Error message</div>
+    </div>
     <button class="btn form__btn">Send</button>
   </form>
 ```
@@ -54,7 +57,7 @@ Inputs have 5 validation options: notEmpty, minlength, maxlength, phone with nor
 
 ### Inputs examples
 
-###### notEmpty
+##### notEmpty
 
 ```
   <div class="input-container form__input-container">
@@ -70,7 +73,7 @@ Inputs have 5 validation options: notEmpty, minlength, maxlength, phone with nor
       <div class="input-validate form__input-validate">The field must not be empty</div>
     </div>
 ```
-###### phone
+##### phone
 
 You can also combine several validation rules
 
@@ -89,7 +92,7 @@ You can also combine several validation rules
     </div>
 ```
 
-###### email
+##### email
 
 ```
     <div class="input-container form__input-container">
@@ -106,7 +109,7 @@ You can also combine several validation rules
     </div>
 ```
 
-###### minlength
+##### minlength
 
 ```
  <div class="input-container form__input-container">
@@ -123,8 +126,9 @@ You can also combine several validation rules
     </div>
 ```
 
-###### maxlength
+##### maxlength
 Along with this, you can use a countdown counter
+Textareas will auto resize to the text inside.
 ```
     <div class="input-container form__input-container">
       <textarea 
@@ -161,6 +165,12 @@ $red: #e73737;
     .form__btn-loader {
       opacity: 1;
       visibility: visible;
+    }
+  }
+  &.error {
+    .form__error-message {
+      margin-top: 40px;
+      height: var(--h);
     }
   }
 }
@@ -253,6 +263,20 @@ textarea {
   min-height: 3rem;
   outline: none;
   padding-top: 10px;
+}
+
+.form__error-message {
+  background: whitesmoke;
+  color: $red;
+  width: 100%;
+  margin-top: 0px;
+  overflow: hidden;
+  height: 0px;
+  transition: height 0.4s ease, margin-top 0.4s ease;
+}
+
+.form__error-message-text {
+  margin: 10px 20px;
 }
 
 //Reset autofill styles

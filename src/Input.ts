@@ -1,4 +1,5 @@
 import Bind from './decorators/@Bind'
+import {Textarea} from './Textarea'
 import {Validation} from './Validation/Validation'
 
 export class Input {
@@ -10,6 +11,10 @@ export class Input {
     this.$input.addEventListener('focus', this.focus)
     this.$input.addEventListener('blur', this.blur)
     this.$input.addEventListener('input', this.change)
+
+    if (this.$input.tagName === 'TEXTAREA') {
+      new Textarea(this.$input)
+    }
   }
 
   @Bind

@@ -1,6 +1,7 @@
 import Bind from './decorators/@Bind'
+import {ErrorMessage, TEM} from './ErrorMessage'
 import {Input, TInput} from './Input'
-import {Loader, TLoader} from './Loader'
+import {SendData, TSendData} from './SendData'
 import {TOpts} from './TOpts'
 
 interface IData {
@@ -9,20 +10,29 @@ interface IData {
 
 export class FormSend {
   inputsInstance: TInput[]
-  loader: TLoader
+  em: TEM
+  sd: TSendData
 
   data: IData = {}
   inputInstance = []
 
   constructor(readonly $form: HTMLFormElement, readonly opts: TOpts) {
     this.init()
-    this.loader = new Loader($form)
   }
 
   private init(): void {
     if (!this.opts || !this.opts.URL) {
       throw new Error('URL is must be defined')
     }
+    this.em = new ErrorMessage(this.$form)
+
+    this.sd = new SendData(
+      {
+        error: () => this.error(),
+        success: () => this.success()
+      },
+      this.$form
+    )
     this.$form.addEventListener('submit', this.submit)
   }
 
@@ -34,6 +44,7 @@ export class FormSend {
   }
 
   protected error(): void {
+    this.em.show()
     this.opts.onSuccess && this.opts.onError()
   }
 
@@ -44,24 +55,12 @@ export class FormSend {
       return formData.append(el, this.data[el])
     })
 
-    this.loader.showLoader()
-    try {
-      const res = await fetch(this.opts.URL, {
-        method: 'POST',
-        body: formData
-      })
+    if (typeof this.opts.URL === 'string') {
+      this.sd.stringUrl(this.opts.URL, formData)
+    }
 
-      if (res.status >= 200 && res.status < 400) {
-        this.success()
-        return
-      } else {
-        alert('Error')
-        this.error()
-      }
-    } catch (e) {
-      console.log(e)
-    } finally {
-      this.loader.hideLoader()
+    if (Array.isArray(this.opts.URL)) {
+      this.sd.arrayUrls(this.opts.URL, formData)
     }
   }
 

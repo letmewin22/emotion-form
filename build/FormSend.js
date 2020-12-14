@@ -43,12 +43,15 @@ class FormSend {
             error: this.error,
             success: this.success,
         }, this.$form);
+        Object.keys(formData_1.data).forEach(key => {
+            const inputClass = new Input_1.Input(this.$form[key]);
+            this.inputInstance.push(inputClass);
+        });
+        this.submit = this.submit.bind(this);
         this.$form.addEventListener('submit', this.submit);
     }
     success() {
         this.reset();
-        this.inputInstance.forEach(inst => inst.destroy());
-        this.inputInstance = [];
         this.opts.onSuccess && this.opts.onSuccess();
     }
     error() {
@@ -59,7 +62,7 @@ class FormSend {
         return __awaiter(this, void 0, void 0, function* () {
             const formData = new FormData();
             Object.keys(formData_1.data).map(el => {
-                return formData.append(el, formData_1.data[el]);
+                return formData.append(el, formData_1.data[el].value);
             });
             if (typeof this.opts.URL === 'string') {
                 yield this.sd.stringUrl(this.opts.URL, formData);
@@ -69,18 +72,11 @@ class FormSend {
             }
         });
     }
-    isInput(input) {
-        return input.dataset.input !== undefined;
-    }
     submit(e) {
         e.preventDefault();
-        const inputs = [...this.$form.elements];
-        const isValid = inputs.map(input => {
-            if (this.isInput(input)) {
-                const inputClass = new Input_1.Input(input);
-                this.inputInstance.push(inputClass);
-                return inputClass.validate(input);
-            }
+        const isValid = Object.keys(formData_1.data).map((key, idx) => {
+            this.inputInstance[idx].validate();
+            return formData_1.data[key].validation;
         });
         if (!isValid.includes(false)) {
             this.requestSend();
@@ -91,8 +87,7 @@ class FormSend {
     }
     focusFirstFailedInput(arr) {
         for (let i = 0; i < arr.length; i++) {
-            const el = arr[i];
-            if (el === false) {
+            if (arr[i] === false) {
                 this.inputInstance[i].focus();
                 break;
             }
@@ -103,9 +98,14 @@ class FormSend {
             this.$form[el].value = '';
             this.$form[el].blur();
             this.$form[el].classList.remove('js-focus');
-            delete formData_1.data[el];
         });
         document.body.classList.remove('e-fixed');
+    }
+    destroy() {
+        this.reset();
+        this.$form.removeEventListener('submit', this.submit);
+        this.inputInstance.forEach(inst => inst.destroy());
+        this.em.destroy();
     }
 }
 __decorate([
@@ -120,11 +120,5 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], FormSend.prototype, "error", null);
-__decorate([
-    _Bind_1.default,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Event]),
-    __metadata("design:returntype", void 0)
-], FormSend.prototype, "submit", null);
 exports.FormSend = FormSend;
 //# sourceMappingURL=FormSend.js.map

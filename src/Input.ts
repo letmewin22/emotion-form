@@ -1,37 +1,39 @@
-import Bind from './decorators/@Bind'
-import {Textarea} from './Textarea'
+import {Textarea, TTA} from './Textarea'
 import {Validation} from './Validation/Validation'
 import {data} from './formData'
 
 export class Input {
-  constructor(readonly $input: HTMLInputElement) {
-    this.init()
-  }
+  textarea: TTA
 
-  private init(): void {
+  constructor(readonly $input: HTMLInputElement) {}
+
+  init(): void {
+    this.bounds()
     this.$input.addEventListener('focus', this.focus)
     this.$input.addEventListener('blur', this.blur)
     this.$input.addEventListener('input', this.change)
 
     if (this.$input.tagName === 'TEXTAREA') {
-      new Textarea(this.$input)
+      this.textarea = new Textarea(this.$input)
     }
   }
 
-  @Bind
-  change(): void {
-    this.validate(this.$input)
-    data[this.$input.name] = this.$input.value
+  bounds(): void {
+    const methods = ['change', 'focus', 'blur']
+    methods.forEach(fn => (this[fn] = this[fn].bind(this)))
   }
 
-  @Bind
+  change(): void {
+    this.validate()
+    data[this.$input.name].value = this.$input.value
+  }
+
   focus(): void {
     this.$input.focus()
     this.$input.classList.add('js-focus')
     document.body.classList.add('e-fixed')
   }
 
-  @Bind
   blur(): void {
     if (!this.$input.value.trim().length) {
       this.$input.blur()
@@ -41,18 +43,20 @@ export class Input {
     document.body.classList.remove('e-fixed')
   }
 
-  validate($el: HTMLInputElement): boolean {
-    const validation = $el.dataset.validation
+  validate(): boolean {
+    const validation = this.$input.dataset.validation
 
     if (validation) {
-      const v = new Validation($el, validation)
+      const v = new Validation(this.$input, validation)
 
       if (!v.init()) {
-        $el.classList.add('error')
+        this.$input.classList.add('error')
+        data[this.$input.name].validation = false
         return false
       }
 
-      $el.classList.remove('error')
+      this.$input.classList.remove('error')
+      data[this.$input.name].validation = true
       return true
     }
   }
@@ -61,7 +65,10 @@ export class Input {
     this.$input.removeEventListener('focus', this.focus)
     this.$input.removeEventListener('blur', this.blur)
     this.$input.removeEventListener('input', this.change)
+    if (this.$input.tagName === 'TEXTAREA') {
+      this.textarea && this.textarea.destroy()
+    }
   }
 }
 
-export type TInput = typeof Input
+export type TInput = typeof Input.prototype

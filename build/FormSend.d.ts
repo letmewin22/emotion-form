@@ -14,9 +14,9 @@ export declare class FormSend {
     protected success(): void;
     protected error(): void;
     protected requestSend(): Promise<any>;
-    isInput(input: HTMLElement): boolean;
     protected submit(e: Event): void;
     focusFirstFailedInput(arr: boolean[]): void;
     protected reset(): void;
+    destroy(): void;
 }
 export declare type TFormSend = typeof FormSend.prototype;

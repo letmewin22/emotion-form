@@ -5,5 +5,6 @@ export declare class ErrorMessage {
     get computeHeight(): string;
     show(): void;
     hide(): void;
+    destroy(): void;
 }
 export declare type TEM = typeof ErrorMessage.prototype;

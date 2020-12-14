@@ -29,14 +29,19 @@ export class FormSend {
       },
       this.$form
     )
+
+    Object.keys(data).forEach(key => {
+      const inputClass = new Input(this.$form[key])
+      this.inputInstance.push(inputClass)
+    })
+
+    this.submit = this.submit.bind(this)
     this.$form.addEventListener('submit', this.submit)
   }
 
   @Bind
   protected success(): void {
     this.reset()
-    this.inputInstance.forEach(inst => inst.destroy())
-    this.inputInstance = []
     this.opts.onSuccess && this.opts.onSuccess()
   }
 
@@ -50,7 +55,7 @@ export class FormSend {
     const formData = new FormData()
 
     Object.keys(data).map(el => {
-      return formData.append(el, data[el])
+      return formData.append(el, data[el].value)
     })
 
     if (typeof this.opts.URL === 'string') {
@@ -62,20 +67,11 @@ export class FormSend {
     }
   }
 
-  isInput(input: HTMLElement): boolean {
-    return input.dataset.input !== undefined
-  }
-
-  @Bind
   protected submit(e: Event): void {
     e.preventDefault()
-    const inputs: any[] = [...this.$form.elements]
-    const isValid = inputs.map(input => {
-      if (this.isInput(input)) {
-        const inputClass = new Input(input)
-        this.inputInstance.push(inputClass)
-        return inputClass.validate(input)
-      }
+    const isValid = Object.keys(data).map((key, idx) => {
+      this.inputInstance[idx].validate()
+      return data[key].validation
     })
 
     if (!isValid.includes(false)) {
@@ -87,8 +83,7 @@ export class FormSend {
 
   focusFirstFailedInput(arr: boolean[]): void {
     for (let i = 0; i < arr.length; i++) {
-      const el = arr[i]
-      if (el === false) {
+      if (arr[i] === false) {
         this.inputInstance[i].focus()
         break
       }
@@ -100,10 +95,16 @@ export class FormSend {
       this.$form[el].value = ''
       this.$form[el].blur()
       this.$form[el].classList.remove('js-focus')
-      delete data[el]
     })
 
     document.body.classList.remove('e-fixed')
+  }
+
+  destroy(): void {
+    this.reset()
+    this.$form.removeEventListener('submit', this.submit)
+    this.inputInstance.forEach(inst => inst.destroy())
+    this.em.destroy()
   }
 }
 

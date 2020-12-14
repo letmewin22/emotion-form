@@ -1,11 +1,14 @@
+import { TTA } from './Textarea';
 export declare class Input {
     readonly $input: HTMLInputElement;
+    textarea: TTA;
     constructor($input: HTMLInputElement);
-    private init;
+    init(): void;
+    bounds(): void;
     change(): void;
     focus(): void;
     blur(): void;
-    validate($el: HTMLInputElement): boolean;
+    validate(): boolean;
     destroy(): void;
 }
-export declare type TInput = typeof Input;
+export declare type TInput = typeof Input.prototype;

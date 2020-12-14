@@ -32,6 +32,12 @@ You can add focus for some of the inputs
 form.addFocus(input number)
 ```
 
+You can destroy instance
+
+```
+form.destroy()
+```
+
 ## HTML markup
 
 **! You can change any classes, but you can't change structure and data-attributes**

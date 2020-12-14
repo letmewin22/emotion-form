@@ -23,6 +23,10 @@ export class ErrorMessage {
     this.$form.classList.remove('error')
     this.$error.style.setProperty('--h', '0')
   }
+
+  destroy(): void {
+    this.$error.removeEventListener('click', this.hide)
+  }
 }
 
 export type TEM = typeof ErrorMessage.prototype

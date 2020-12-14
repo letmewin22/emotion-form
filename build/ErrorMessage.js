@@ -31,6 +31,9 @@ class ErrorMessage {
         this.$form.classList.remove('error');
         this.$error.style.setProperty('--h', '0');
     }
+    destroy() {
+        this.$error.removeEventListener('click', this.hide);
+    }
 }
 __decorate([
     _Bind_1.default,

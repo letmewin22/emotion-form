@@ -25,7 +25,7 @@ export class FormSend {
     this.sd = new SendData(
       {
         error: this.error,
-        success: this.success,
+        success: this.success
       },
       this.$form
     )
@@ -83,7 +83,8 @@ export class FormSend {
 
   focusFirstFailedInput(arr: boolean[]): void {
     for (let i = 0; i < arr.length; i++) {
-      if (arr[i] === false) {
+      const el = arr[i]
+      if (el === false) {
         this.inputInstance[i].focus()
         break
       }

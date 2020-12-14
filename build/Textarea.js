@@ -13,13 +13,14 @@ class Textarea {
         element.removeEventListener(event, handler, false);
     }
     init() {
+        this.resize = this.resize.bind(this);
+        this.delayedResize = this.delayedResize.bind(this);
         this.observe(this.$textarea, 'change', this.resize);
         this.observe(this.$textarea, 'cut', this.delayedResize);
         this.observe(this.$textarea, 'paste', this.delayedResize);
         this.observe(this.$textarea, 'drop', this.delayedResize);
         this.observe(this.$textarea, 'keydown', this.delayedResize);
         this.$textarea.focus();
-        this.resize = this.resize.bind(this);
         this.resize();
     }
     resize() {

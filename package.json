@@ -1,6 +1,6 @@
 {
   "name": "@emotionagency/form",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A package for convenient work with forms: validation of inputs, sending to the server",
   "main": "build/index.js",
   "types": "build/index.d.ts",

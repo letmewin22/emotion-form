@@ -41,7 +41,7 @@ class FormSend {
         this.em = new ErrorMessage_1.ErrorMessage(this.$form);
         this.sd = new SendData_1.SendData({
             error: this.error,
-            success: this.success,
+            success: this.success
         }, this.$form);
         Object.keys(formData_1.data).forEach(key => {
             const inputClass = new Input_1.Input(this.$form[key]);
@@ -87,7 +87,8 @@ class FormSend {
     }
     focusFirstFailedInput(arr) {
         for (let i = 0; i < arr.length; i++) {
-            if (arr[i] === false) {
+            const el = arr[i];
+            if (el === false) {
                 this.inputInstance[i].focus();
                 break;
             }

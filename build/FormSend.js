@@ -41,7 +41,7 @@ class FormSend {
         this.em = new ErrorMessage_1.ErrorMessage(this.$form);
         this.sd = new SendData_1.SendData({
             error: this.error,
-            success: this.success
+            success: this.success,
         }, this.$form);
         this.$form.addEventListener('submit', this.submit);
     }
@@ -53,7 +53,7 @@ class FormSend {
     }
     error() {
         this.em.show();
-        this.opts.onSuccess && this.opts.onError();
+        this.opts.onError && this.opts.onError();
     }
     requestSend() {
         return __awaiter(this, void 0, void 0, function* () {

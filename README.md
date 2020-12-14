@@ -130,7 +130,8 @@ You can also combine several validation rules
 ```
 
 ##### maxlength
-Along with this, you can use a countdown counter
+Along with this, you can use a countdown counter.
+
 Textareas will auto resize to the text inside.
 ```
     <div class="input-container form__input-container">

@@ -25,7 +25,7 @@ export class FormSend {
     this.sd = new SendData(
       {
         error: this.error,
-        success: this.success
+        success: this.success,
       },
       this.$form
     )
@@ -43,7 +43,7 @@ export class FormSend {
   @Bind
   protected error(): void {
     this.em.show()
-    this.opts.onSuccess && this.opts.onError()
+    this.opts.onError && this.opts.onError()
   }
 
   protected async requestSend(): Promise<any> {

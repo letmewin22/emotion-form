@@ -22,7 +22,6 @@ export class Input {
   change(): void {
     this.validate(this.$input)
     data[this.$input.name] = this.$input.value
-    console.log(data)
   }
 
   @Bind

@@ -33,7 +33,6 @@ class Input {
     change() {
         this.validate(this.$input);
         formData_1.data[this.$input.name] = this.$input.value;
-        console.log(formData_1.data);
     }
     focus() {
         this.$input.focus();

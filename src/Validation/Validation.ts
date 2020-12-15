@@ -21,6 +21,10 @@ export class Validation {
   }
 
   phone(): boolean {
+    this.$input.value = this.$input.value.replace(
+      /[A-z]|[А-я]|\s|[*!@#$%^&{}[\]~""/|=]/g,
+      ''
+    )
     this.$input.value = formatPhoneNumber(this.$input.value)
     return true
   }

@@ -23,6 +23,7 @@ class Validation {
         return false;
     }
     phone() {
+        this.$input.value = this.$input.value.replace(/[A-z]|[А-я]|\s|[*!@#$%^&{}[\]~""/|=]/g, '');
         this.$input.value = formatPhoneNumber_1.formatPhoneNumber(this.$input.value);
         return true;
     }

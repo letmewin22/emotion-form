@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Validation = void 0;
-const libphonenumber_js_1 = require("libphonenumber-js");
+const formatPhoneNumber_1 = require("./formatPhoneNumber");
 class Validation {
     constructor($input, options) {
         this.$input = $input;
@@ -23,11 +23,7 @@ class Validation {
         return false;
     }
     phone() {
-        this.$input.value = this.$input.value.replace(/[A-z]|[А-я]|\s|[*!@#$%^&{}[\]~""/|=]/g, '');
-        const phoneNumber = libphonenumber_js_1.parsePhoneNumberFromString(this.$input.value);
-        if (phoneNumber) {
-            this.$input.value = phoneNumber.formatInternational();
-        }
+        this.$input.value = formatPhoneNumber_1.formatPhoneNumber(this.$input.value);
         return true;
     }
     minlength(value) {

@@ -1,4 +1,4 @@
-import {parsePhoneNumberFromString} from 'libphonenumber-js'
+import {formatPhoneNumber} from './formatPhoneNumber'
 
 export class Validation {
   constructor(readonly $input: HTMLInputElement, readonly options: string) {}
@@ -21,15 +21,7 @@ export class Validation {
   }
 
   phone(): boolean {
-    this.$input.value = this.$input.value.replace(
-      /[A-z]|[А-я]|\s|[*!@#$%^&{}[\]~""/|=]/g,
-      ''
-    )
-    const phoneNumber = parsePhoneNumberFromString(this.$input.value)
-    if (phoneNumber) {
-      this.$input.value = phoneNumber.formatInternational()
-    }
-
+    this.$input.value = formatPhoneNumber(this.$input.value)
     return true
   }
 

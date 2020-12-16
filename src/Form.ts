@@ -25,7 +25,7 @@ export class Form {
     this.$inputs.forEach($el => {
       data[$el.name] = {
         value: '',
-        validation: false
+        validation: $el.dataset.validation ? false : true,
       }
       const inst = new Input($el)
       inst.init()

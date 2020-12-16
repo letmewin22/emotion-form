@@ -59,6 +59,7 @@ export class Input {
       data[this.$input.name].validation = true
       return true
     }
+    return true
   }
 
   destroy(): void {

@@ -20,7 +20,7 @@ class Form {
         this.$inputs.forEach($el => {
             formData_1.data[$el.name] = {
                 value: '',
-                validation: false
+                validation: $el.dataset.validation ? false : true,
             };
             const inst = new Input_1.Input($el);
             inst.init();

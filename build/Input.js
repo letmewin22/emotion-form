@@ -51,6 +51,7 @@ class Input {
             formData_1.data[this.$input.name].validation = true;
             return true;
         }
+        return true;
     }
     destroy() {
         this.$input.removeEventListener('focus', this.focus);

@@ -23,8 +23,6 @@ export class Textarea {
     this.observe(this.$textarea, 'drop', this.delayedResize)
     this.observe(this.$textarea, 'keydown', this.delayedResize)
 
-    this.$textarea.focus()
-
     this.resize()
   }
 
